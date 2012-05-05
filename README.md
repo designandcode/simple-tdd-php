@@ -12,8 +12,8 @@
 	/dummy.png  
 /.jQuery  
 	/.lib  
-	  /.qunit  
-		  /qunit.css  
+		/.qunit  
+			/qunit.css  
 			/qunit.js  
 	/.tests  
 	/jquery.cookie.js  
