@@ -1,0 +1,9 @@
+.assert{
+	color:white;
+}
+.assert-pass{
+	background:green;
+}
+.assert-fail{
+	background:red;
+}
