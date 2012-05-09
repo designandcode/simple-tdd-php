@@ -1,7 +1,7 @@
 <?php
 
 function baz(){
-	return array('one','three');
+	return array('one','two','three');
 }
 
 ?>

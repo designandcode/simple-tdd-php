@@ -1,4 +1,14 @@
-<link href="../../css/tests.css" rel="stylesheet" type="text/css" />
+<style>
+.assert{
+	color:white;
+}
+.assert-pass{
+	background:green;
+}
+.assert-fail{
+	background:red;
+}
+</style>
 <?php
 
 // Tracks number of tests run and fail/pass
@@ -19,16 +29,16 @@
 	}
 
 	// Prettify asserts
-	function assertWrapper($type, $funcname,$expected, $result, $comparison){
+	function assertWrapper($type, $namespace, $funcname,$expected, $result, $comparison){
 		if($type=="pass")
-			return("<dl class=\"assert assert-pass\"><dt>PASS - Expected: $funcname( ) $comparison $expected</dt><dd>Got: $funcname( ) $comparison $result</dd></dl>");
+			return("<dl class=\"assert assert-pass\"><dt>PASS - Expected: $namespace:$funcname( ) $comparison $expected</dt><dd>Got: $namespace:$funcname( ) $comparison $result</dd></dl>");
 		else
-			return("<dl class=\"assert assert-fail\"><dt>Fail - Expected: $funcname( ) $comparison $expected</dt><dd>Got: $funcname( ) $comparison $result</dd></dl>");
+			return("<dl class=\"assert assert-fail\"><dt>Fail - Expected: $namespace:$funcname( ) $comparison $expected</dt><dd>Got: $namespace:$funcname( ) $comparison $result</dd></dl>");
 	}
 
 	// Match Weakly Typed
-	function assertStringWeak($funcname, $expected, $customMessage=""){
-		include_once($funcname . ".php");
+	function assertStringWeak($namespace, $funcname, $expected, $customMessage=""){
+		include_once($namespace . ".php");
 		$result = call_user_func($funcname);
 		if($result == $expected) {
 			$pass = true;
@@ -38,12 +48,12 @@
 			$pass = false;
 			assertRegister("fail");
 		}	
-		echo assertWrapper($pass,$funcname,$expected,$result,"==");
+		echo assertWrapper($pass,$namespace,$funcname,$expected,$result,"==");
 	}
 
 	// Match Strongly Typed
-	function assertStringStrong($funcname, $expected, $customMessage=""){
-		include_once($funcname . ".php");
+	function assertStringStrong($namespace, $funcname, $expected, $customMessage=""){
+		include_once($namespace . ".php");
 		$result = call_user_func($funcname);
 		if($result === $expected) {
 			$pass = true;
@@ -53,12 +63,12 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$funcname,$expected,$result,"===");
+		echo assertWrapper($pass,$namespace,$funcname,$expected,$result,"===");
 	}
 
 	// Match Pattern
-	function assertStringMatch($funcname, $expected, $customMessage=""){
-		include_once($funcname . ".php");
+	function assertStringMatch($namespace, $funcname, $expected, $customMessage=""){
+		include_once($namespace . ".php");
 		$result = call_user_func($funcname);
 		$pattern = "$expected";
 		$pos = strpos($result, $pattern);
@@ -70,12 +80,12 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$funcname,$expected,$result,"at {position $pos} found ");
+		echo assertWrapper($pass,$namespace,$funcname,$expected,$result,"at {position $pos} found ");
 	}
 
 	// Match Array Length
-	function assertArrayLength($funcname, $expected){
-		include_once($funcname . ".php");
+	function assertArrayLength($namespace, $funcname, $expected){
+		include_once($namespace . ".php");
 		$result = call_user_func($funcname);
 		$length = count($result);
 		if($length == $expected) {
@@ -86,23 +96,35 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$funcname,$expected,$length,"length =");
+		echo assertWrapper($pass,$namespace,$funcname,$expected,$length,"length =");
 	}
 
 	// Match Array Value
-	function assertArrayValue($funcname, $expected){
-		include_once($funcname . ".php");
+	function assertArrayValue($namespace, $funcname, $expected){
+		include_once($namespace . ".php");
 		$result = call_user_func($funcname);
-		$key = array_search($expected, $result);
+		if(count($result) != count($result, COUNT_RECURSIVE)){
+			$values = array();
+			foreach($result as $line){
+				foreach($line as $element){
+					array_push($values, $element);
+				}
+			}
+			// echo "This is a multidimensional array";
+			$result = $values;
+			$key = array_search($expected, $result);
+		} else {
+			$key = array_search($expected, $result);
+		}
 		$value = $result[$key];
-		if($key != false){
+		if($key !== false){
 			$pass = true;
 			assertRegister("pass");
 		} else{
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$funcname,$expected,$value,"at {position $key} found ");
+		echo assertWrapper($pass,$namespace,$funcname,$expected,$value,"at {position $key} found ");
 	}
 
 
