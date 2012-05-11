@@ -29,11 +29,11 @@
 	}
 
 	// Prettify asserts
-	function assertWrapper($type, $namespace, $funcname,$expected, $result, $comparison){
-		if($type=="pass")
-			return("<dl class=\"assert assert-pass\"><dt>PASS - Expected: $namespace:$funcname( ) $comparison $expected</dt><dd>Got: $namespace:$funcname( ) $comparison $result</dd></dl>");
+	function assertWrapper($pass, $namespace, $funcname,$expected, $result, $comparison, $customMessage=""){
+		if($pass=="pass")
+			return("<dl class=\"assert assert-pass\"><dt>PASS - Expected: $namespace:$funcname( ) $comparison $expected</dt><dd>Got: $namespace:$funcname( ) $comparison $result</dd><dd>$customMessage &nbsp;</dd></dl>");
 		else
-			return("<dl class=\"assert assert-fail\"><dt>Fail - Expected: $namespace:$funcname( ) $comparison $expected</dt><dd>Got: $namespace:$funcname( ) $comparison $result</dd></dl>");
+			return("<dl class=\"assert assert-fail\"><dt>Fail - Expected: $namespace:$funcname( ) $comparison $expected</dt><dd>Got: $namespace:$funcname( ) $comparison $result</dd><dd>$customMessage &nbsp;</dd></dl>");
 	}
 
 	// Match Weakly Typed
@@ -48,7 +48,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}	
-		echo assertWrapper($pass,$namespace,$funcname,$expected,$result,"==");
+		echo assertWrapper($pass,$namespace,$funcname,$expected,$result,"==",$customMessage);
 	}
 
 	// Match Strongly Typed
