@@ -1,18 +1,43 @@
 <?php
 
 include_once("../testlib.php");
-//include_once("../foo.php");
-//include_once("../barz.php");
 
-assertStringWeak("foo","foo",false,"function foo() returns false");
-assertStringStrong("foo","foo",true);
-assertStringMatch("bar","bar","foo is barz"/*,"The return string contains the characters 'foo is barz' at least once"*/);
-assertArrayLength("bar","linkedlist",3);
-assertArrayValue("bar","linkedlist","Mike");
-assertArrayLength("baz","baz",3);
-assertArrayValue("baz","baz","two");
-//echo foo();
-//print_r($register);
+assertStringWeak(
+	import("toUpperCase"),
+	"Foo,Bar",
+	"FOO BAR",
+	"function toUpperCase() converts Foo Bar to FOO BAR"
+);
+assertStringStrong(
+	import("toUpperCase"),
+	"Foo,Bar",
+	"FOO BAR",
+	"function toUpperCase() converts Foo Bar to FOO BAR"
+);
+assertInString(
+	import("bar"),
+	"",
+	"Foo is barz",
+	"bar contains the text foo is barz"
+);
+assertArrayLength(
+	import("baz"),
+	"",
+	5,
+	"Found 5 items"
+);
+assertInArray(
+	import("baz"),
+	"",
+	"three",
+	"Found three"
+);
+assertInArray(
+	import("baz"),
+	"",
+	"Mike",
+	"Found Mike"
+);
 echo assertHeader();
 
 ?>
