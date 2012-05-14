@@ -11,15 +11,10 @@
 </head>
 <body>
 <?php
-	// Import the test library
-	//include_once("php/testlib.php");
 
 
 	// functions under test
-	include_once("php/foo.php");
-	include_once("php/bar.php");
-	include_once("php/baz.php");
-	
+	include_once("php/functions.php");
 
 
 
@@ -32,5 +27,6 @@
 <li><?php echo $baz ?></li>
 <?php endforeach; ?>
 </p>
+<p><?php echo toUpperCase( foo(), "bar") ?></p>
 </body>
 </html>

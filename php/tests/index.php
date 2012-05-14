@@ -1,42 +1,37 @@
 <?php
 
 include_once("../testlib.php");
+include_once("../functions.php");
 
 assertStringWeak(
-	import("toUpperCase"),
-	"Foo,Bar",
+	toUpperCase(foo(),"bar"),
 	"FOO BAR",
-	"function toUpperCase() converts Foo Bar to FOO BAR"
+	"toUpperCase() converts Foo Bar to FOO BAR"
 );
 assertStringStrong(
-	import("toUpperCase"),
-	"Foo,Bar",
+	toUpperCase("foo","bar"),
 	"FOO BAR",
-	"function toUpperCase() converts Foo Bar to FOO BAR"
+	"toUpperCase() converts Foo Bar to FOO BAR"
 );
 assertInString(
-	import("bar"),
-	"",
+	bar(),
 	"Foo is barz",
-	"bar contains the text foo is barz"
+	"bar() contains the text foo is barz"
 );
 assertArrayLength(
-	import("baz"),
-	"",
+	baz(),
 	5,
-	"Found 5 items"
+	"baz() returned 5 items"
 );
 assertInArray(
-	import("baz"),
-	"",
+	baz(),
 	"three",
-	"Found three"
+	"baz() returned an array containing at least on value equal to three"
 );
 assertInArray(
-	import("baz"),
-	"",
+	baz(),
 	"Mike",
-	"Found Mike"
+	"baz() returned an array containing at least one value equal to Mike"
 );
 echo assertHeader();
 

@@ -29,14 +29,13 @@
 	}
 
 	// Prettify asserts
-	function assertWrapper($pass,$expected, $result, $comparison, $callee, $func="", $parms="", $customMessage=""){
+	function assertWrapper($pass,$expected, $result, $comparison, $callee, $customMessage=""){
 		$texpected = gettype($expected);
 		$tresult = gettype($result);
-		$parms = implode('","', $parms);
 		if($pass=="pass")
-			return("<dl class=\"assert assert-pass\"><dt>PASS ($callee) -> $func(\"$parms\") - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd></dl>");
+			return("<dl class=\"assert assert-pass\"><dt>PASS ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd></dl>");
 		else
-			return("<dl class=\"assert assert-fail\"><dt>Fail ($callee) -> $func(\"$parms\") - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd></dl>");
+			return("<dl class=\"assert assert-fail\"><dt>Fail ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd></dl>");
 	}
 
 	// Import Module
@@ -46,11 +45,9 @@
 	}
 
 	// Match Weakly Typed
-	function assertStringWeak($module, $parms, $expected, $customMessage=""){
+	function assertStringWeak($function, $expected, $customMessage=""){
 		$callee = __FUNCTION__;
-		$func = $module;
-		$parms = explode(",", $parms);
-		$result = call_user_func_array($func, $parms);
+		$result = $function;
 		if($result == $expected) {
 			$pass = true;
 			assertRegister("pass");
@@ -59,16 +56,14 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$result,"==",$callee,$func,$parms,$customMessage);	
+		echo assertWrapper($pass,$expected,$result,"==",$callee,$customMessage);
 	}
 	
 
 	// Match Strongly Typed
-	function assertStringStrong($module, $parms, $expected, $customMessage=""){
+	function assertStringStrong($function, $expected, $customMessage=""){
 		$callee = __FUNCTION__;
-		$func = $module;
-		$parms = explode(",", $parms);
-		$result = call_user_func_array($func, $parms);
+		$result = $function;
 		if($result === $expected) {
 			$pass = true;
 			assertRegister("pass");
@@ -77,15 +72,13 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$result,"===",$callee,$func,$parms,$customMessage);
+		echo assertWrapper($pass,$expected,$result,"===",$callee,$customMessage);
 	}
 
 	// Match Pattern
-	function assertInString($module, $parms, $expected, $customMessage=""){
+	function assertInString($function, $expected, $customMessage=""){
 		$callee = __FUNCTION__;
-		$func = $module;
-		$parms = explode(",", $parms);
-		$result = call_user_func_array($func, $parms);
+		$result = $function;
 		$pattern = "$expected";
 		$pos = strpos($result, $pattern);
 		if($pos !== false) {
@@ -96,15 +89,13 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$result,"found ",$callee,$func,$parms,$customMessage);
+		echo assertWrapper($pass,$expected,$result,"found ",$callee,$customMessage);
 	}
 
 	// Match Array Length
-	function assertArrayLength($module, $function, $expected, $customMessage=""){
+	function assertArrayLength($function, $expected, $customMessage=""){
 		$callee = __FUNCTION__;
-		$func = $module;
-		$parms = explode(",", $parms);
-		$result = call_user_func_array($func, $parms);
+		$result = $function;
 		$length = count($result);
 		if($length == $expected) {
 			$pass = true;
@@ -114,15 +105,13 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$length,"found ",$callee,$func,$parms,$customMessage);
+		echo assertWrapper($pass,$expected,$length,"found ",$callee,$customMessage);
 	}
 
 	// Match Array Value
-	function assertInArray($module, $function, $expected, $customMessage){
+	function assertInArray($function, $expected, $customMessage){
 		$callee = __FUNCTION__;
-		$func = $module;
-		$parms = explode(",", $parms);
-		$result = call_user_func_array($func, $parms);
+		$result = $function;
 		if(count($result) != count($result, COUNT_RECURSIVE)){
 			$values = array();
 			foreach($result as $line){
@@ -143,7 +132,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$value,"found ",$callee,$func,$parms,$customMessage);
+		echo assertWrapper($pass,$expected,$value,"found ",$callee,$customMessage);
 	}
 
 
