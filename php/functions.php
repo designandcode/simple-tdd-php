@@ -7,7 +7,7 @@ function foo(){
 }
 
 function bar(){
-	return "Foo is barz";
+	return "Foo is barzarella";
 }
 
 function baz(){

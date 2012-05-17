@@ -29,13 +29,14 @@
 	}
 
 	// Prettify asserts
-	function assertWrapper($pass,$expected, $result, $comparison, $callee, $customMessage=""){
+	function assertWrapper($pass,$expected, $result, $comparison, $callee, $customMessage="",$print){
 		$texpected = gettype($expected);
 		$tresult = gettype($result);
+		$outcome = ($print) ? "<dd>$print</dd>" : "";
 		if($pass=="pass")
-			return("<dl class=\"assert assert-pass\"><dt>PASS ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd></dl>");
+			return("<dl class=\"assert assert-pass\"><dt>PASS ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd>$outcome</dl>");
 		else
-			return("<dl class=\"assert assert-fail\"><dt>Fail ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd></dl>");
+			return("<dl class=\"assert assert-fail\"><dt>Fail ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd>$outcome</dl>");
 	}
 
 	// Import Module
@@ -45,8 +46,9 @@
 	}
 
 	// Match Weakly Typed
-	function assertStringWeak($function, $expected, $customMessage=""){
+	function assertStringWeak($function, $expected, $customMessage="",$print=false){
 		$callee = __FUNCTION__;
+		$print = ($print) ? var_export($function, true) : $print;
 		$result = $function;
 		if($result == $expected) {
 			$pass = true;
@@ -56,13 +58,14 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$result,"==",$callee,$customMessage);
+		echo assertWrapper($pass,$expected,$result,"==",$callee,$customMessage,$print);
 	}
 	
 
 	// Match Strongly Typed
-	function assertStringStrong($function, $expected, $customMessage=""){
+	function assertStringStrong($function, $expected, $customMessage="",$print=false){
 		$callee = __FUNCTION__;
+		$print = ($print) ? var_export($function, true) : $print;
 		$result = $function;
 		if($result === $expected) {
 			$pass = true;
@@ -72,12 +75,13 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$result,"===",$callee,$customMessage);
+		echo assertWrapper($pass,$expected,$result,"===",$callee,$customMessage,$print);
 	}
 
 	// Match Pattern
-	function assertInString($function, $expected, $customMessage=""){
+	function assertInString($function, $expected, $customMessage="",$print=false){
 		$callee = __FUNCTION__;
+		$print = ($print) ? var_export($function, true) : $print;
 		$result = $function;
 		$pattern = "$expected";
 		$pos = strpos($result, $pattern);
@@ -89,12 +93,13 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$result,"found ",$callee,$customMessage);
+		echo assertWrapper($pass,$expected,$result,"found ",$callee,$customMessage,$print);
 	}
 
 	// Match Array Length
-	function assertArrayLength($function, $expected, $customMessage=""){
+	function assertArrayLength($function, $expected, $customMessage="",$print=false){
 		$callee = __FUNCTION__;
+		$print = ($print) ? var_export($function, true) : $print;
 		$result = $function;
 		$length = count($result);
 		if($length == $expected) {
@@ -105,12 +110,13 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$length,"found ",$callee,$customMessage);
+		echo assertWrapper($pass,$expected,$length,"found ",$callee,$customMessage,$print);
 	}
 
 	// Match Array Value
-	function assertInArray($function, $expected, $customMessage){
+	function assertInArray($function, $expected, $customMessage,$print=false){
 		$callee = __FUNCTION__;
+		$print = ($print) ? var_export($function, true) : $print;
 		$result = $function;
 		if(count($result) != count($result, COUNT_RECURSIVE)){
 			$values = array();
@@ -132,7 +138,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
-		echo assertWrapper($pass,$expected,$value,"found ",$callee,$customMessage);
+		echo assertWrapper($pass,$expected,$value,"found ",$callee,$customMessage,$print);
 	}
 
 
