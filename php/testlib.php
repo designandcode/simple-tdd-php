@@ -13,6 +13,11 @@
 
 // Tracks number of tests run and fail/pass
 	$register = array();
+	$count = 0;
+	function assertCount(){
+		global $count;
+		return $count++;
+	}
 	function assertRegister($type){
 		global $register;
 		array_push($register, $type);
@@ -30,13 +35,14 @@
 
 	// Prettify asserts
 	function assertWrapper($pass,$expected, $result, $comparison, $callee, $customMessage="",$print){
+		global $count;
 		$texpected = gettype($expected);
 		$tresult = gettype($result);
 		$outcome = ($print) ? "<dd>$print</dd>" : "";
 		if($pass=="pass")
-			return("<dl class=\"assert assert-pass\"><dt>PASS ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd>$outcome</dl>");
+			return("<dl class=\"assert assert-pass\"><dt>$count - PASS ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd>$outcome</dl>");
 		else
-			return("<dl class=\"assert assert-fail\"><dt>Fail ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd>$outcome</dl>");
+			return("<dl class=\"assert assert-fail\"><dt>$count - Fail ($callee) - Expected ($texpected) $expected $comparison ($tresult) $result</dt><dd>$customMessage &nbsp;</dd>$outcome</dl>");
 	}
 
 	// Import Module
@@ -58,6 +64,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
+		assertCount();
 		echo assertWrapper($pass,$expected,$result,"==",$callee,$customMessage,$print);
 	}
 	
@@ -75,6 +82,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
+		assertCount();
 		echo assertWrapper($pass,$expected,$result,"===",$callee,$customMessage,$print);
 	}
 
@@ -93,6 +101,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
+		assertCount();
 		echo assertWrapper($pass,$expected,$result,"found ",$callee,$customMessage,$print);
 	}
 
@@ -110,6 +119,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
+		assertCount();
 		echo assertWrapper($pass,$expected,$length,"found ",$callee,$customMessage,$print);
 	}
 
@@ -138,6 +148,7 @@
 			$pass = false;
 			assertRegister("fail");
 		}
+		assertCount();
 		echo assertWrapper($pass,$expected,$value,"found ",$callee,$customMessage,$print);
 	}
 
