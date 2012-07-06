@@ -92,7 +92,7 @@
 		$print = ($print) ? var_export($function, true) : $print;
 		$result = $function;
 		$pattern = "$expected";
-		$pos = strpos($result, $pattern);
+		$pos = strpos((string) $result, $pattern);
 		if($pos !== false) {
 			$pass = true;
 			assertRegister("pass");
